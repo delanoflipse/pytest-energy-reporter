@@ -1,0 +1,27 @@
+name: tests
+
+on: [pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+          token: ${{ secrets.PAT_TOKEN }}
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: "1.7.1"
+      
+      - name: Install dependencies
+        run: poetry install
+      
+      - name: Run pytest
+        run: poetry run coverage run -m pytest
+  
