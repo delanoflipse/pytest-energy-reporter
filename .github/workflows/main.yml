@@ -22,5 +22,5 @@ jobs:
         run: poetry install
       
       - name: Run pytest
-        run: poetry run coverage run -m pytest
+        run: poetry run pytest
   
