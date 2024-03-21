@@ -1,6 +1,6 @@
 import pytest
 
-pytest_plugins = ("pytester", "pytest_energy_reporter.plugin")
+pytest_plugins = ("pytest_energy_reporter.plugin")
 
 def fib(n):
   if n == 0:
@@ -11,14 +11,14 @@ def fib(n):
     return fib(n-1) + fib(n-2)
 
 @pytest.mark.energy(n=5)
-def test_fib():
+def test_fib_n():
   fib(35)
 
 @pytest.mark.energy
-def test_fib_2():
-  fib(39)
-  
-@pytest.mark.energy
 def test_fib_2x():
-  fib(39)
-  fib(39)
+  fib(35)
+  fib(35)
+
+@pytest.mark.energy
+def test_fib_faster():
+  fib(30)
