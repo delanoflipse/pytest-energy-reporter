@@ -19,7 +19,7 @@ jobs:
           version: "1.7.1"
       
       - name: Install nested dependencies
-        run: pip install -r pytest_energy_reporter/energy_consumption_reporter/requirements.txt
+        run: poetry run pip install -r pytest_energy_reporter/energy_consumption_reporter/requirements.txt
       
       - name: Install dependencies
         run: poetry install
