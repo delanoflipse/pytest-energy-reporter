@@ -26,4 +26,4 @@ def test_fib_faster():
 
 def test_fib_assert():
   energy = measure(lambda: fib(34), n=3)
-  assert energy.power < 100
+  assert energy.power_w < 100

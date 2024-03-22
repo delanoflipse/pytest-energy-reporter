@@ -6,17 +6,17 @@ energy_model = EnergyModel()
 energy_model.setup()
 
 class EnergyMeasurement:
-    def __init__(self, name: str, time: float, energy: float, power: float):
+    def __init__(self, name: str, time_ms: float, energy_j: float, power_w: float):
         self.name = name
-        # Average time in seconds
-        self.time = time
+        # Average time in mili sceonds
+        self.time_ms = time_ms
         # Energy in Joules
-        self.energy = energy
+        self.energy_j = energy_j
         # Energy in Watts
-        self.power = power
+        self.power_w = power_w
 
     def __str__(self):
-        return f"Name: {self.name}\tTime: {self.time:.2f} s\tEnergy: {self.energy:.2f} J\tPower: {self.power:.2f} W"
+        return f"Name: {self.name}\tTime: {self.time_ms:.2f} s\tEnergy: {self.energy_j:.2f} J\tPower: {self.power_w:.2f} W"
       
 def measure(func, n: int = 3):
     energy_test = EnergyTest(energy_model=energy_model, test_id=func.__name__)

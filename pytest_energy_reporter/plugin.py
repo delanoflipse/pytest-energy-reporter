@@ -1,9 +1,9 @@
 import pytest
 
-from .measurement import energy_model, get_measurement
+from .measurement import EnergyMeasurement, energy_model, get_measurement
 from .energy_consumption_reporter.plugin.energy_test import EnergyTest
 
-energy_metrics = []
+energy_metrics: list[EnergyMeasurement] = []
 
 def pytest_addoption(parser):
     parser.addoption("--energy-runs", action="store", default=3, type=int,
@@ -52,10 +52,10 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
     terminalreporter.write_sep('-', 'Energy Summary')
     
     # get the energy metrics sorted by power
-    ordered_measurements = sorted(energy_metrics, key=lambda x: x.power)
+    ordered_measurements = sorted(energy_metrics, key=lambda x: x.power_w)
     
     # report the energy metrics as a table
-    table_strings = print_table_str(['Test', 'Time (s)', 'Energy (J)', 'Power (W)'],
-                                    [[m.name, f"{m.time:.2f}", f"{m.energy:.2f}", f"{m.power:.2f}"] for m in ordered_measurements])
+    table_strings = print_table_str(['Test', 'Time (ms)', 'Energy (J)', 'Power (W)'],
+                                    [[m.name, f"{m.time_ms:.2f}", f"{m.energy_j:.2f}", f"{m.power_w:.2f}"] for m in ordered_measurements])
     for line in table_strings:
         terminalreporter.write_line(line)
