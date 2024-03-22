@@ -1,10 +1,12 @@
 import pytest
 import logging
-from .energy_consumption_reporter.plugin.energy_test import EnergyTest
+from .energy_consumption_reporter.plugin.energy_test import EnergyModel, EnergyTest
 import numpy as np
 
 energy_metrics = []
 
+energy_model = EnergyModel()
+energy_model.setup()
 
 class EnergyMeasurement:
     def __init__(self, name: str, time: float, energy: float, power: float):
@@ -21,13 +23,6 @@ def pytest_addoption(parser):
     parser.addoption("--energy-runs", action="store", default=3, type=int,
                      help="Number of runs for tests marked as 'energy'")
 
-
-def pytest_configure(config):
-    config.addinivalue_line(
-        "markers", "energy(n): specify the number of iterations for energy analysis."
-    )
-
-
 @pytest.hookimpl
 def pytest_runtest_call(item):
     # only run the tests marked for energy
@@ -42,7 +37,7 @@ def pytest_runtest_call(item):
         energy_runs = item.session.config.getoption("--energy-runs")
 
     # intialize the energy test
-    energy_test = EnergyTest(func_name=item.nodeid)
+    energy_test = EnergyTest(test_id=item.nodeid, energy_model=energy_model)
     
     # run tests and collect metrics
     try:

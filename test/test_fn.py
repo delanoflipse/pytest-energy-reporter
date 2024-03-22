@@ -21,4 +21,4 @@ def test_fib_2x():
 
 @pytest.mark.energy()
 def test_fib_faster():
-  fib(32)
+  fib(34)
