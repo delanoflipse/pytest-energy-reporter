@@ -19,13 +19,14 @@ class EnergyMeasurement:
         return f"Name: {self.name}\tTime: {self.time_ms:.2f} s\tEnergy: {self.energy_j:.2f} J\tPower: {self.power_w:.2f} W"
       
 def measure(func, n: int = 3):
-    energy_test = EnergyTest(energy_model=energy_model, test_id=func.__name__)
-    measurement = get_measurement(energy_test, func, n)
+    energy_test = EnergyTest(energy_model)
+    test_id = func.__name__
+    measurement = get_measurement(energy_test, func, test_id, n)
     return measurement
 
-def get_measurement(e: EnergyTest, func, n: int = 3):
-    metrics = e.test(func, n)
-    measurement = EnergyMeasurement(e.test_id,
+def get_measurement(e: EnergyTest, func, test_id: str, n: int = 3):
+    metrics = e.test(func, n, test_id=test_id)
+    measurement = EnergyMeasurement(test_id,
                                     np.mean(metrics['time']),
                                     np.mean(metrics['energy']),
                                     np.mean(metrics['power'])

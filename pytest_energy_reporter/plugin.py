@@ -23,11 +23,11 @@ def pytest_runtest_call(item):
         energy_runs = item.session.config.getoption("--energy-runs")
 
     # intialize the energy test
-    energy_test = EnergyTest(test_id=item.nodeid, energy_model=energy_model)
+    energy_test = EnergyTest(energy_model)
     
     # run tests and collect metrics
     try:
-        measurement = get_measurement(energy_test, item.runtest, energy_runs)
+        measurement = get_measurement(energy_test, item.runtest, item.nodeid, energy_runs)
         energy_metrics.append(measurement)
     except Exception as e:
         raise e
