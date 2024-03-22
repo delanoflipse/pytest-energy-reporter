@@ -1,6 +1,7 @@
 import pytest
+from pytest_energy_reporter.measurement import measure
 
-pytest_plugins = ("pytest_energy_reporter.plugin")
+pytest_plugins = ("pytest_energy_reporter.plugin",)
 
 def fib(n):
   if n == 0:
@@ -22,3 +23,7 @@ def test_fib_2x():
 @pytest.mark.energy()
 def test_fib_faster():
   fib(34)
+
+def test_fib_assert():
+  energy = measure(lambda: fib(34), n=3)
+  assert energy.power < 100

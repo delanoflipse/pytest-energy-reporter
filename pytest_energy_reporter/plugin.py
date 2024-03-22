@@ -1,23 +1,9 @@
 import pytest
-import logging
-from .energy_consumption_reporter.plugin.energy_test import EnergyModel, EnergyTest
-import numpy as np
+
+from .measurement import energy_model, get_measurement
+from .energy_consumption_reporter.plugin.energy_test import EnergyTest
 
 energy_metrics = []
-
-energy_model = EnergyModel()
-energy_model.setup()
-
-class EnergyMeasurement:
-    def __init__(self, name: str, time: float, energy: float, power: float):
-        self.name = name
-        self.time = time
-        self.energy = energy
-        self.power = power
-
-    def __str__(self):
-        return f"Name: {self.name}\tTime: {self.time:.2f} s\tEnergy: {self.energy:.2f} J\tPower: {self.power:.2f} W"
-
 
 def pytest_addoption(parser):
     parser.addoption("--energy-runs", action="store", default=3, type=int,
@@ -41,12 +27,7 @@ def pytest_runtest_call(item):
     
     # run tests and collect metrics
     try:
-        metrics = energy_test.test(item.runtest, energy_runs)
-        measurement = EnergyMeasurement(item.nodeid,
-                                        np.mean(metrics['time']),
-                                        np.mean(metrics['energy']),
-                                        np.mean(metrics['power'])
-                                        )
+        measurement = get_measurement(energy_test, item.runtest, energy_runs)
         energy_metrics.append(measurement)
     except Exception as e:
         raise e
