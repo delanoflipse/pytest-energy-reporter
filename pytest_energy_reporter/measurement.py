@@ -4,6 +4,7 @@ from .energy_consumption_reporter.plugin.energy_tester import EnergyTester
 import numpy as np
 
 energy_tester = EnergyTester()
+energy_tester.report_builder.report_path = "reports/energy/"
 
 
 class EnergyMeasurement:
