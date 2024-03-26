@@ -4,3 +4,4 @@ build/
 __pycache__
 model.pkl
 .pytest_cache
+EnergyReport-*.json

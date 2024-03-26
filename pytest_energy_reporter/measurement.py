@@ -1,34 +1,46 @@
 
-from .energy_consumption_reporter.plugin.energy_test import EnergyModel, EnergyTest
+from typing import Optional
+from .energy_consumption_reporter.plugin.energy_tester import EnergyTester
 import numpy as np
 
-energy_model = EnergyModel()
-energy_model.setup()
+energy_tester = EnergyTester()
+
 
 class EnergyMeasurement:
+    '''Energy Measurement data class'''
+
     def __init__(self, name: str, time_ms: float, energy_j: float, power_w: float):
         self.name = name
         # Average time in mili sceonds
         self.time_ms = time_ms
+        # Average time in sceonds
+        self.time_s = time_ms / 1000
         # Energy in Joules
         self.energy_j = energy_j
         # Energy in Watts
         self.power_w = power_w
+        # EDP
+        self.edp = (time_ms / 1000) * energy_j
 
     def __str__(self):
-        return f"Name: {self.name}\tTime: {self.time_ms:.2f} s\tEnergy: {self.energy_j:.2f} J\tPower: {self.power_w:.2f} W"
-      
-def measure(func, n: int = 3):
-    energy_test = EnergyTest(energy_model)
-    test_id = func.__name__
-    measurement = get_measurement(energy_test, func, test_id, n)
-    return measurement
+        return f"Name: {self.name}\tTime: {self.time_ms:.2f} ms\tEnergy: {self.energy_j:.2f} J\tPower: {self.power_w:.2f} W"
 
-def get_measurement(e: EnergyTest, func, test_id: str, n: int = 3):
-    metrics = e.test(func, n, test_id=test_id)
-    measurement = EnergyMeasurement(test_id,
-                                    np.mean(metrics['time']),
-                                    np.mean(metrics['energy']),
-                                    np.mean(metrics['power'])
-                                    )
+
+def measure_energy(fn, n: int = 3, func_name: Optional[str] = None):
+    '''Measure the energy consumption of a function n times using the energy tester'''
+    
+    # Default to the function name
+    if func_name is None:
+        func_name = fn.__name__
+
+    # Run the energy tester
+    metrics = energy_tester.test(fn, n, func_name=func_name)
+
+    # Convert to measurement
+    # Taking the average time, energy, and power
+    time = np.mean(metrics['time'])
+    energy = np.mean(metrics['energy'])
+    power = np.mean(metrics['power'])
+    measurement = EnergyMeasurement(func_name, time, energy, power)
+
     return measurement
