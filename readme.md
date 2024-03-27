@@ -20,17 +20,16 @@ import pytest
 @pytest.mark.energy
 def test_fn():
 
-# Or define the number of iterations to measure
+# Or define the exact number of iterations to measure
 @pytest.mark.energy(n=3)
 def test_fn():
 
 # Or use the measurement directly
 from pytest_energy_reporter.measurement import measure_energy
+
 def test_fn():
   result = measure_energy(fn)
   assert result.energy_j < 200
-
-
 ```
 
 The plugin exposes a few flags in pytest

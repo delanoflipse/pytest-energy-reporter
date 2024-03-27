@@ -1,3 +1,4 @@
+import logging
 import pytest
 
 from .util import print_table_str
@@ -5,6 +6,9 @@ from .measurement import EnergyMeasurement, energy_tester, measure_energy
 
 energy_metrics: list[EnergyMeasurement] = []
 
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.StreamHandler())
+logger.setLevel(logging.DEBUG)
 
 def pytest_addoption(parser):
     '''Add command line options for the plugin'''
@@ -19,13 +23,13 @@ def pytest_addoption(parser):
 def pytest_configure(config):
     '''Configure the energy tester based on the command line options'''
     # save the energy report if the option is set
-    if config.getoption("--save-energy-report"):
-        energy_tester.set_save_report(True)
-    else:
-        energy_tester.set_save_report(False)
+    energy_tester.set_save_report(config.getoption(
+        "--save-energy-report", default=False))
+
     # set energy report path
-    energy_tester.report_builder.report_path = config.getoption("--energy-report-path")
-    
+    energy_tester.report_builder.report_path = config.getoption(
+        "--energy-report-path")
+
     # add a marker for energy tests
     config.addinivalue_line(
         "markers", "energy(n): specify the number of iterations for energy analysis."
@@ -34,7 +38,7 @@ def pytest_configure(config):
 
 @pytest.hookimpl
 def pytest_runtest_call(item):
-    '''Hook into the test call to measure the energy'''	
+    '''Hook into the test call to measure the energy'''
     # only run the tests marked for energy
     if not "energy" in item.keywords:
         return
@@ -47,19 +51,41 @@ def pytest_runtest_call(item):
         energy_runs = item.session.config.getoption("--energy-iterations")
 
     # run tests and collect metrics
-    measurement = measure_energy(item.runtest, n=energy_runs, func_name=item.nodeid)
+    measurement = measure_energy(
+        item.runtest, n=energy_runs, func_name=item.nodeid)
     energy_metrics.append(measurement)
 
 
 def pytest_terminal_summary(terminalreporter, exitstatus, config):
     '''Report the energy metrics at the end of the test run'''
-    
-    # get the energy metrics sorted by power
-    ordered_measurements = sorted(energy_metrics, key=lambda x: x.edp, reverse=True)
-    
+
+    # Skip report if nothing was measured
+    if len(energy_metrics) == 0:
+        return
+
+    # get the energy metrics sorted by EDP
+    ordered_measurements = sorted(
+        energy_metrics, key=lambda x: x.edp, reverse=True)
+
     # report the energy metrics as a table
     terminalreporter.write_sep('-', 'Energy Summary')
-    table_strings = print_table_str(['Test', 'Time (s)', 'Energy (J)', 'Power (W)', 'EDP (Js)'],
-                                      [[m.name, f"{m.get_time_s():.2f}", f"{m.energy_j:.2f}", f"{m.power_w:.2f}", f"{m.edp:.1f}"] for m in ordered_measurements])
+    table_headers = ['Test', 'Time (s)', 'Energy (J)', 'Power (W)', 'EDP (Js)']
+    table_values = [
+        [
+            m.name,
+            f"{m.get_time_s():.2f}",
+            f"{m.energy_j:.2f}",
+            f"{m.power_w:.2f}",
+            f"{m.edp:.1f}",
+        ]
+        for m in ordered_measurements
+    ]
+    
+    # calculate the max available width in the terminal
+    name_max_width = terminalreporter._screen_width - sum(list(map(lambda x: len(x) + 3, table_headers[1:]))) - 3
+
+    table_strings = print_table_str(table_headers,
+                                    table_values,
+                                    col_widths=[name_max_width])
     for line in table_strings:
         terminalreporter.write_line(line)
