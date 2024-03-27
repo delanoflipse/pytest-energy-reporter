@@ -14,8 +14,6 @@ class EnergyMeasurement:
         self.name = name
         # Average time in mili sceonds
         self.time_ms = time_ms
-        # Average time in sceonds
-        self.time_s = time_ms / 1000
         # Energy in Joules
         self.energy_j = energy_j
         # Energy in Watts
@@ -23,6 +21,9 @@ class EnergyMeasurement:
         # EDP
         self.edp = (time_ms / 1000) * energy_j
 
+    def get_time_s(self):
+        return self.time_ms / 1000    
+    
     def __str__(self):
         return f"Name: {self.name}\tTime: {self.time_ms:.2f} ms\tEnergy: {self.energy_j:.2f} J\tPower: {self.power_w:.2f} W"
 
