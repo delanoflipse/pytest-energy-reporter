@@ -82,6 +82,8 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
     ]
     
     # calculate the max available width in the terminal
+    # this limits the width of the Test column
+    # The other ones are limited by the size of their title (as these are bigger than the values)
     name_max_width = terminalreporter._screen_width - sum(list(map(lambda x: len(x) + 3, table_headers[1:]))) - 3
 
     table_strings = print_table_str(table_headers,
