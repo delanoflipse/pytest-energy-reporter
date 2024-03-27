@@ -83,6 +83,6 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
 
     table_strings = print_table_str(table_headers,
                                     table_values,
-                                    col_widths=[name_max_width])
+                                    max_col_widths=[name_max_width])
     for line in table_strings:
         terminalreporter.write_line(line)
