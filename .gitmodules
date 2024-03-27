@@ -1,3 +1,0 @@
-[submodule "pytest_energy_reporter/energy_consumption_reporter"]
-	path = pytest_energy_reporter/energy_consumption_reporter
-	url = https://github.com/aron-hoogeveen/energy-consumption-reporter.git
