@@ -1,14 +1,9 @@
-import logging
 import pytest
 
 from .util import print_table_str
 from .measurement import EnergyMeasurement, energy_tester, measure_energy
 
 energy_metrics: list[EnergyMeasurement] = []
-
-logger = logging.getLogger(__name__)
-logger.addHandler(logging.StreamHandler())
-logger.setLevel(logging.DEBUG)
 
 def pytest_addoption(parser):
     '''Add command line options for the plugin'''
