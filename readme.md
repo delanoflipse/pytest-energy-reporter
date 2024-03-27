@@ -1,6 +1,6 @@
-# pytest energy reporter
+# An Energy Reporter Plugin for pytest
 
-The pytest energy reporter can be used to report on energy usage of code, by measuring tests.
+The `pytest_energy_reporter` is a `pytest` plugin can be used to report on energy and power consumption usage of code, by easily integrating in existing test suites.
 
 ## Installation
 
@@ -12,7 +12,7 @@ pip install pytest_energy_reporter
 
 ## Usage
 
-The package is automatically enabled in pytest. To start measuring energy consumption, mark tests as energy test using:
+The package is automatically enabled in pytest. If it is not, make sure to read the documentation on [how to enable plugins in pytest](https://docs.pytest.org/en/stable/how-to/plugins.html). To start measuring energy consumption, mark tests as energy test using:
 
 ```python
 import pytest
@@ -35,7 +35,7 @@ def test_fn():
 from pytest_energy_reporter.measurement import measure
 
 def test_fn():
-  measure, result, error = measure_energy(fn)
+  measure, result, error = measure(fn, n=2)
   assert result == # ...
   assert error == None
   assert result.energy_j < 200
