@@ -89,3 +89,15 @@ And run the example test suite:
 ```bash
 pytest --log-cli-level=DEBUG
 ```
+
+### Publishing
+
+1. Build the project:
+
+```bash
+poetry build
+```
+2. Publish to pip (make sure you [have credentials setup](https://python-poetry.org/docs/repositories/#configuring-credentials)):
+```bash
+poetry publish
+```
