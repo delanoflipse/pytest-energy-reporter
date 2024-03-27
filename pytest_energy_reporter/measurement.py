@@ -32,7 +32,7 @@ def measure_energy(fn, n: int = 3, func_name: Optional[str] = None):
     
     # Default to the function name
     if func_name is None:
-        func_name = fn.__name__
+        func_name = fn.__qualname__
 
     # Run the energy tester
     metrics = energy_tester.test(fn, n, func_name=func_name)

@@ -10,13 +10,13 @@ def pytest_addoption(parser):
     '''Add command line options for the plugin'''
     parser.addoption("--energy-iterations", action="store", default=3, type=int,
                      help="Number of runs for tests marked as 'energy'")
-    parser.addoption(" --save-energy-report", action="store_true",
+    parser.addoption("--save-energy-report", action="store_true",
                      default=False, help="Save the energy report")
 
 
 def pytest_configure(config):
     '''Configure the energy tester based on the command line options'''
-    if config.getoption(" --save-energy-report"):
+    if config.getoption("--save-energy-report"):
         energy_tester.set_save_report(True)
     else:
         energy_tester.set_save_report(False)
@@ -37,7 +37,7 @@ def pytest_runtest_call(item):
         energy_runs = item.session.config.getoption("--energy-iterations")
 
     # run tests and collect metrics
-    measurement = measure_energy(item.runtest, func_name=item.nodeid, n=energy_runs)
+    measurement = measure_energy(item.runtest, n=energy_runs, func_name=item.nodeid)
     energy_metrics.append(measurement)
 
 
