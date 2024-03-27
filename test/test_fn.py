@@ -41,7 +41,7 @@ def test_fib_lower():
 def test_fib_assert_w():
   energy, res, err = measure(lambda: fib(34), n=3)
   assert res == 5702887
-  assert err is None
+  assert err == None
   assert energy.power_w < 200
 
 def test_fib_assert_j():
