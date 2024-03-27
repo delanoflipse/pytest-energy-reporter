@@ -29,12 +29,12 @@ def test_fib_n2():
 def test_fib_n1():
   fib(35)
 
-@pytest.mark.energy()
+@pytest.mark.energy
 def test_fib_2x():
   fib(35)
   fib(35)
 
-@pytest.mark.energy()
+@pytest.mark.energy
 def test_fib_lower():
   fib(34)
 
