@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="pytest_energy_reporter",
-    version='0.1.0',
+    version='0.2.0',
     description='A energy estimation reporter for pytest',
     url='https://github.com/delanoflipse/pytest-energy-reporter',
     packages=["pytest_energy_reporter"],
