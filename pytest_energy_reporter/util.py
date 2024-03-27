@@ -25,7 +25,7 @@ def print_table_str(headers=list[str], values=list[list[str]], max_col_widths: l
             cell_str = str(cell)
             col_width = column_widths[i]
             if len(cell_str) > col_width:
-                cell_str = cell_str[:col_width - 3] + '...'
+                cell_str = '...' + cell_str[(col_width - 3):]
             row_strings.append(cell_str.ljust(col_width))
 
         table.append(" | ".join(row_strings))
