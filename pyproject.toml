@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pytest_energy_reporter"
-version = "0.3.3"
+version = "0.3.4"
 authors = [
   "Delano Flipse <delanoflipse@gmail.com>",
 ]
@@ -40,11 +40,6 @@ psutil = "5.9.8"
 pyarrow = "15.0.0"
 scikit-learn = "1.4.1.post1"
 statsmodels = "0.14.1"
-
-[tool.pytest.ini_options]
-markers = [
-    "energy(n): specify the number of iterations for energy analysis.",
-]
 
 [tool.poetry.group.dev.dependencies]
 setuptools = "^69.2.0"

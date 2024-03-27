@@ -1,8 +1,6 @@
 import pytest
 from pytest_energy_reporter.measurement import measure_energy
 
-pytest_plugins = ("pytest_energy_reporter.plugin",)
-
 def fib(n):
   if n == 0:
     return 0

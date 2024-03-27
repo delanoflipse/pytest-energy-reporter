@@ -16,10 +16,16 @@ def pytest_addoption(parser):
 
 def pytest_configure(config):
     '''Configure the energy tester based on the command line options'''
+    # save the energy report if the option is set
     if config.getoption("--save-energy-report"):
         energy_tester.set_save_report(True)
     else:
         energy_tester.set_save_report(False)
+    
+    # add a marker for energy tests
+    config.addinivalue_line(
+        "markers", "energy(n): specify the number of iterations for energy analysis."
+    )
 
 
 @pytest.hookimpl
