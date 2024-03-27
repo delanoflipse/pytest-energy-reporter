@@ -15,7 +15,7 @@ classifiers = [
     "Framework :: Pytest",
 ]
 description = "An energy estimation reporter for pytest"
-readme = "README.md"
+readme = "readme.md"
 license = "LICENSE.txt"
 keywords = ["pytest", "energy", "reporter"]
 
