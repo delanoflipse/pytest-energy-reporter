@@ -32,7 +32,7 @@ pytest_energy_reporter = "pytest_energy_reporter.plugin"
 python = "^3.10"
 pytest = "^8.1.1"
 numpy = "1.26.4"
-energy-consumption-reporter = "^0.1.0"
+energy-consumption-reporter = "^0.1.2"
 
 [tool.poetry.group.dev.dependencies]
 setuptools = "^69.2.0"

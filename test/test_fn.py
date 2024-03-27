@@ -1,3 +1,4 @@
+from time import sleep
 import pytest
 from pytest_energy_reporter.measurement import measure, measure_energy
 
@@ -37,6 +38,10 @@ def test_fib_2x():
 @pytest.mark.energy
 def test_fib_lower():
   fib(34)
+
+@pytest.mark.energy
+def test_nothing():
+  sleep(2)
 
 def test_fib_assert_w():
   energy, res, err = measure(lambda: fib(34), n=3)
