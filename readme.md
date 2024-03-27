@@ -16,7 +16,6 @@ The package is automatically enabled in pytest. To start measuring energy consum
 
 ```python
 import pytest
-from pytest_energy_reporter.measurement import measure_energy
 
 @pytest.mark.energy
 def test_fn():
@@ -26,6 +25,7 @@ def test_fn():
 def test_fn():
 
 # Or use the measurement directly
+from pytest_energy_reporter.measurement import measure_energy
 def test_fn():
   result = measure_energy(fn)
   assert result.energy_j < 200
@@ -35,10 +35,11 @@ def test_fn():
 
 The plugin exposes a few flags in pytest
 
-| Flag | Argument | Meaning |
-| --- | --- | --- |
-| `--save-energy-report` | `<none>` | Will save the energy report in `reports/energy/` 
-| `--energy-iterations` | `int` | Specify the number of iterations for the energy measurement. |
+| Flag | Argument | Default | Meaning |
+| --- | --- | --- | --- |
+| `--energy-iterations` | `int` | `3` |  Specify the number of iterations for the energy measurement. |
+| `--save-energy-report` | `<none>` | `False` | Whether to save the energy report.
+| `--energy-report-path` | `str` | `'reports/energy'` | The path to save the energy report in.
 
 ## Contributing
 
@@ -64,11 +65,6 @@ git submodule init && git submodule update
 3. Install dependencies 
 ```bash
 poetry install
-```
-
-4. (Temporary) install nested dependencies:
-```bash
-poetry run pip install -r pytest_energy_reporter/energy_consumption_reporter/requirements.txt
 ```
 
 5. (Temporary) (Only on windows) install wmi:

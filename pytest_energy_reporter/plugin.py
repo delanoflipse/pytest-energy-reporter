@@ -10,6 +10,8 @@ def pytest_addoption(parser):
     '''Add command line options for the plugin'''
     parser.addoption("--energy-iterations", action="store", default=3, type=int,
                      help="Number of runs for tests marked as 'energy'")
+    parser.addoption("--energy-report-path", action="store", type=str,
+                     default='reports/energy', help="Path relative to the working directory in which the energy report will be saved.")
     parser.addoption("--save-energy-report", action="store_true",
                      default=False, help="Save the energy report")
 
@@ -21,6 +23,8 @@ def pytest_configure(config):
         energy_tester.set_save_report(True)
     else:
         energy_tester.set_save_report(False)
+    # set energy report path
+    energy_tester.report_builder.report_path = config.getoption("--energy-report-path")
     
     # add a marker for energy tests
     config.addinivalue_line(
@@ -56,6 +60,6 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
     # report the energy metrics as a table
     terminalreporter.write_sep('-', 'Energy Summary')
     table_strings = print_table_str(['Test', 'Time (s)', 'Energy (J)', 'Power (W)', 'EDP (Js)'],
-                                      [[m.name, f"{m.time_s:.2f}", f"{m.energy_j:.2f}", f"{m.power_w:.2f}", f"{m.edp:.1f}"] for m in ordered_measurements])
+                                      [[m.name, f"{m.get_time_s():.2f}", f"{m.energy_j:.2f}", f"{m.power_w:.2f}", f"{m.edp:.1f}"] for m in ordered_measurements])
     for line in table_strings:
         terminalreporter.write_line(line)
