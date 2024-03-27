@@ -1,5 +1,5 @@
 import pytest
-from pytest_energy_reporter.measurement import measure_energy
+from pytest_energy_reporter.measurement import measure, measure_energy
 
 def fib(n):
   if n == 0:
@@ -39,7 +39,9 @@ def test_fib_lower():
   fib(34)
 
 def test_fib_assert_w():
-  energy = measure_energy(lambda: fib(34), n=3)
+  energy, res, err = measure(lambda: fib(34), n=3)
+  assert res == 5702887
+  assert err == None
   assert energy.power_w < 200
 
 def test_fib_assert_j():

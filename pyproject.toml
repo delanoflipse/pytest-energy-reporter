@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pytest_energy_reporter"
-version = "0.4.1"
+version = "0.4.2"
 authors = [
   "Delano Flipse <delanoflipse@gmail.com>",
 ]
@@ -16,7 +16,7 @@ classifiers = [
 ]
 description = "An energy estimation reporter for pytest"
 readme = "readme.md"
-license = "LICENSE.txt"
+license = "license.txt"
 keywords = ["pytest", "energy", "reporter"]
 
 [tool.poetry.urls]

@@ -28,7 +28,7 @@ class EnergyMeasurement:
         return f"Name: {self.name}\tTime: {self.time_ms:.2f} ms\tEnergy: {self.energy_j:.2f} J\tPower: {self.power_w:.2f} W"
 
 
-def measure_energy(fn, n: int = 3, func_name: Optional[str] = None):
+def measure(fn, n: int = 3, func_name: Optional[str] = None) -> tuple[EnergyMeasurement, Optional[any], Optional[Exception]]:
     '''Measure the energy consumption of a function n times using the energy tester'''
     
     # Default to the function name
@@ -44,5 +44,12 @@ def measure_energy(fn, n: int = 3, func_name: Optional[str] = None):
     energy = np.mean(metrics['energy'])
     power = np.mean(metrics['power'])
     measurement = EnergyMeasurement(func_name, time, energy, power)
+    result = metrics['result']
+    exception = metrics['exception']
+    
+    return (measurement, result, exception)
 
+def measure_energy(fn, n: int = 3, func_name: Optional[str] = None) -> EnergyMeasurement:
+    '''Measure the energy consumption of a function n times using the energy tester'''
+    measurement, _, _ = measure(fn, n, func_name)
     return measurement
