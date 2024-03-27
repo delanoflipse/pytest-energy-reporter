@@ -66,7 +66,7 @@ git submodule init && git submodule update
 poetry install
 ```
 
-5. (Temporary) (Only on windows) install wmi:
+4. (Temporary) (Only on windows) install wmi:
 ```bash
 poetry run pip install pywin32
 ```
