@@ -1,0 +1,31 @@
+name: tests
+
+on: [pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: Show local directory
+        run: ls -la
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: "1.7.1"
+      
+      # - name: Install nested dependencies
+      #   run: poetry run pip install -r pytest_energy_reporter/energy_consumption_reporter/requirements.txt
+      
+      - name: Install dependencies
+        run: poetry install
+      
+      - name: Run pytest
+        run: poetry run python -m pytest --log-cli-level=DEBUG --strict-markers
+  
