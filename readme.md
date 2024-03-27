@@ -28,7 +28,16 @@ def test_fn():
 from pytest_energy_reporter.measurement import measure_energy
 
 def test_fn():
-  result = measure_energy(fn)
+  measure = measure_energy(fn)
+  assert measure.energy_j < 200
+
+# Or use the measurement and the result of the method
+from pytest_energy_reporter.measurement import measure
+
+def test_fn():
+  measure, result, error = measure_energy(fn)
+  assert result == # ...
+  assert error == None
   assert result.energy_j < 200
 ```
 
