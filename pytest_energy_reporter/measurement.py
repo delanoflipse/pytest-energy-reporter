@@ -1,6 +1,6 @@
 
 from typing import Optional
-from .energy_consumption_reporter.plugin.energy_tester import EnergyTester
+from energy_consumption_reporter.energy_tester import EnergyTester
 import numpy as np
 
 energy_tester = EnergyTester()
