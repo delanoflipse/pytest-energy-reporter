@@ -71,6 +71,11 @@ poetry install
 poetry run pip install -r pytest_energy_reporter/energy_consumption_reporter/requirements.txt
 ```
 
+5. (Temporary) (Only on windows) install wmi:
+```bash
+poetry run pip install pywin32
+```
+
 ### Usage
 
 To develop the plugin, use:
