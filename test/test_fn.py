@@ -9,39 +9,62 @@ def fib(n):
     return 1
   else:
     return fib(n-1) + fib(n-2)
-
-@pytest.mark.energy(n=5)
-def test_fib_n5():
-  fib(35)
-  
-@pytest.mark.energy(n=4)
-def test_fib_n4():
-  fib(35)
-  
-@pytest.mark.energy(n=3)
-def test_fib_n3():
-  fib(35)
-  
-@pytest.mark.energy(n=2)
-def test_fib_n2():
-  fib(35)
   
 @pytest.mark.energy(n=1)
-def test_fib_n1():
+def test_fib_35_n1():
+  fib(35)
+
+@pytest.mark.energy(n=3)
+def test_fib_35_n3():
+  fib(35)
+
+@pytest.mark.energy(n=5)
+def test_fib_35_n5():
+  fib(35)
+
+@pytest.mark.energy(n=10)
+def test_fib_35_n10():
+  fib(35)
+
+@pytest.mark.energy(n=20)
+def test_fib_35_n20():
   fib(35)
 
 @pytest.mark.energy
-def test_fib_2x():
+def test_fib_35():
+  fib(35)
+
+@pytest.mark.energy
+def test_fib_slow_35():
+  sleep(2)
+  fib(35)
+
+@pytest.mark.energy
+def test_fib_35_2x():
   fib(35)
   fib(35)
 
 @pytest.mark.energy
-def test_fib_lower():
+def test_fib_34():
   fib(34)
 
 @pytest.mark.energy
-def test_nothing():
+def test_fib_34_2x():
+  fib(34)
+  fib(34)
+
+@pytest.mark.energy
+def test_fib_34_3x():
+  fib(34)
+  fib(34)
+  fib(34)
+@pytest.mark.energy
+def test_sleep_2s():
   sleep(2)
+
+@pytest.mark.energy
+def test_sleep_5s():
+  sleep(5)
 
 def test_fib_assert_w():
   energy, res, err = measure(lambda: fib(34), n=3)
