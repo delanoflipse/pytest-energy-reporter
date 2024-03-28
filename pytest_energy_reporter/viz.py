@@ -8,6 +8,7 @@ import numpy as np
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description="Visualize energy report measurements.")
   parser.add_argument('file_link', type=str, help='The relative path to the energy report file.')
+  parser.add_argument('-s', '--save', type=str, help='The directory to save the visualization in. If not provided, the visualization will just be displayed without being saved.')
 
   args = parser.parse_args()
   file_path = os.path.join(os.getcwd(), args.file_link)
@@ -46,6 +47,11 @@ if __name__ == "__main__":
   plt.xticks(rotation=-45, ha='left')
   plt.tight_layout()
   
+  save_path = os.path.join(os.getcwd(), args.save) if args.save else None
+  
+  if args.save:
+    plt.savefig(os.path.join(save_path, "figure_j"), dpi=300, bbox_inches='tight')
+  
   plt.figure()
   plt.boxplot(powers)
   plt.bar(ticks, avg_powers, alpha=0.2)
@@ -58,6 +64,9 @@ if __name__ == "__main__":
   plt.show(block=False)
   plt.xticks(rotation=-45, ha='left')
   plt.tight_layout()
+  if args.save:
+    plt.savefig(os.path.join(save_path, "figure_w"), dpi=300, bbox_inches='tight')
 
   plt.show()
+  
   
