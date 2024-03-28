@@ -68,11 +68,11 @@ def test_sleep_5s():
   sleep(5)
 
 def test_fib_assert_w():
-  energy, res, err = measure(lambda: fib(34), n=3)
+  energy, res, err = measure(lambda: fib(34))
   assert res == 5702887
   assert err == None
   assert energy.power_w < 200
 
 def test_fib_assert_j():
-  energy = measure_energy(lambda: fib(34), n=2)
+  energy = measure_energy(lambda: fib(34))
   assert energy.energy_j < 1000

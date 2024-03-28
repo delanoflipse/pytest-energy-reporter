@@ -48,8 +48,9 @@ The plugin exposes a few flags in pytest
 | Flag | Argument | Default | Meaning |
 | --- | --- | --- | --- |
 | `--energy-iterations` | `int` | `3` |  Specify the number of iterations for the energy measurement. |
-| `--save-energy-report` | `<none>` | `False` | Whether to save the energy report.
+| `--save-energy-report` | `<none>` | `False` | Feature flag to save the energy report.
 | `--energy-report-path` | `str` | `'reports/energy'` | The path to save the energy report in.
+| `--energy-offset-zero` | `<none>` | `False` | Feature flag to compensate the power measurement by the power draw of zero utilization.
 
 ## Contributing
 
