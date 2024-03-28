@@ -1,9 +1,11 @@
 import pytest
 
 from .util import print_table_str
+from energy_consumption_reporter.energy_tester import OutputType
 from .measurement import EnergyMeasurement, energy_tester, measure_energy
 
 energy_metrics: list[EnergyMeasurement] = []
+
 
 def pytest_addoption(parser):
     '''Add command line options for the plugin'''
@@ -13,13 +15,21 @@ def pytest_addoption(parser):
                      default='reports/energy', help="Path relative to the working directory in which the energy report will be saved.")
     parser.addoption("--save-energy-report", action="store_true",
                      default=False, help="Save the energy report")
+    parser.addoption("--energy-offset-zero", action="store_true",
+                     default=False, help="Experimental: remove the offset of power values by accounting for the zero power level.")
 
 
 def pytest_configure(config):
     '''Configure the energy tester based on the command line options'''
     # save the energy report if the option is set
-    energy_tester.set_save_report(config.getoption(
-        "--save-energy-report", default=False))
+    if config.getoption("--save-energy-report", default=False):
+        energy_tester.set_save_report(OutputType.JSON)
+    else:
+        energy_tester.set_save_report(OutputType.NONE)
+
+    # toggle the zero offset feature flag
+    energy_tester.set_zero_offset(config.getoption(
+        "--energy-offset-zero", default=False))
 
     # set energy report path
     energy_tester.report_builder.report_path = config.getoption(
@@ -47,7 +57,7 @@ def pytest_runtest_call(item):
 
     # run tests and collect metrics
     measurement = measure_energy(
-        item.runtest, n=energy_runs, func_name=item.nodeid)
+        item.runtest, n=energy_runs, func_name=item.nodeid, include_case=True)
     energy_metrics.append(measurement)
 
 
@@ -75,11 +85,12 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
         ]
         for m in ordered_measurements
     ]
-    
+
     # calculate the max available width in the terminal
     # this limits the width of the Test column
     # The other ones are limited by the size of their title (as these are bigger than the values)
-    name_max_width = terminalreporter._screen_width - sum(list(map(lambda x: len(x) + 3, table_headers[1:]))) - 3
+    name_max_width = terminalreporter._screen_width - \
+        sum(list(map(lambda x: len(x) + 3, table_headers[1:]))) - 3
 
     table_strings = print_table_str(table_headers,
                                     table_values,

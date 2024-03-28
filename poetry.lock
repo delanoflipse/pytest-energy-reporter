@@ -91,13 +91,13 @@ tests = ["pytest", "pytest-cov", "pytest-xdist"]
 
 [[package]]
 name = "energy-consumption-reporter"
-version = "0.1.2"
+version = "0.1.4"
 description = "An energy consumption measuring and reporting tool"
 optional = false
 python-versions = "<4.0,>=3.10"
 files = [
-    {file = "energy_consumption_reporter-0.1.2-py3-none-any.whl", hash = "sha256:e94d1c64caec7fba6da8f72fed5c1952b06d0bae52960d784e0e9f840e02f90c"},
-    {file = "energy_consumption_reporter-0.1.2.tar.gz", hash = "sha256:059a3362d08a0456b026f623108a40b5fe76fc5ca07b5dafe8651a1f7b9e9b1b"},
+    {file = "energy_consumption_reporter-0.1.4-py3-none-any.whl", hash = "sha256:c6316077b4cc232a14b70b2dbfe9f42319c1f38187bd1aed705dad50932363b6"},
+    {file = "energy_consumption_reporter-0.1.4.tar.gz", hash = "sha256:b809a71ac4cb43fde20ec8ff8e668c2605c8be135047d21986bb55fd5177b991"},
 ]
 
 [package.dependencies]
@@ -905,4 +905,4 @@ scikit-learn = ["scikit-learn"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "5bf2cb62bbc601dffaf40b8160f75d70b68045d1f806819c6d44390488dbe362"
+content-hash = "d7335f3aa668cbc425d31e1d17084cd5d912eb71bd09a99dae9be25b7211d7ca"

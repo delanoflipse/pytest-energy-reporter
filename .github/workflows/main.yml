@@ -25,6 +25,9 @@ jobs:
       
       - name: Run pytest
         run: poetry run python -m pytest --log-cli-level=DEBUG --strict-markers  --energy-iterations=30 --save-energy-report
+      
+      - name: Run pytest with experimental energy offset
+        run: poetry run python -m pytest --log-cli-level=DEBUG --strict-markers  --energy-iterations=30 --save-energy-report --energy-offset-zero
 
       - name: Save energy report
         uses: actions/upload-artifact@v4

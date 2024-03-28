@@ -22,21 +22,22 @@ class EnergyMeasurement:
         self.edp = (time_ms / 1000) * energy_j
 
     def get_time_s(self):
-        return self.time_ms / 1000    
-    
+        return self.time_ms / 1000
+
     def __str__(self):
         return f"Name: {self.name}\tTime: {self.time_ms:.2f} ms\tEnergy: {self.energy_j:.2f} J\tPower: {self.power_w:.2f} W"
 
 
-def measure(fn, n: int = 3, func_name: Optional[str] = None) -> tuple[EnergyMeasurement, Optional[any], Optional[Exception]]:
+def measure(fn, n: int = 3, func_name: Optional[str] = None, include_case=False) -> tuple[EnergyMeasurement, Optional[any], Optional[Exception]]:
     '''Measure the energy consumption of a function n times using the energy tester'''
-    
+
     # Default to the function name
     if func_name is None:
         func_name = fn.__qualname__
 
     # Run the energy tester
-    metrics = energy_tester.test(fn, n, func_name=func_name)
+    metrics = energy_tester.test(
+        fn, n, func_name=func_name, include_case=include_case)
 
     # Convert to measurement
     # Taking the average time, energy, and power
@@ -46,10 +47,11 @@ def measure(fn, n: int = 3, func_name: Optional[str] = None) -> tuple[EnergyMeas
     measurement = EnergyMeasurement(func_name, time, energy, power)
     result = metrics['result']
     exception = metrics['exception']
-    
+
     return (measurement, result, exception)
 
-def measure_energy(fn, n: int = 3, func_name: Optional[str] = None) -> EnergyMeasurement:
+
+def measure_energy(fn, n: int = 3, func_name: Optional[str] = None, include_case=False) -> EnergyMeasurement:
     '''Measure the energy consumption of a function n times using the energy tester'''
-    measurement, _, _ = measure(fn, n, func_name)
+    measurement, _, _ = measure(fn, n, func_name, include_case)
     return measurement
