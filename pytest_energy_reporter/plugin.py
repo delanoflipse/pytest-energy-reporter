@@ -17,7 +17,7 @@ def pytest_addoption(parser):
     parser.addoption("--save-energy-report", action="store_true",
                      default=False, help="Save the energy report")
     parser.addoption("--energy-offset-zero", action="store_true",
-                     default=False, help="Experimental: remove the offset of power values by accounting for the zero power level.")
+                     default=False, help="Remove the offset of power values by accounting for the zero power level.")
 
 
 def pytest_configure(config):
