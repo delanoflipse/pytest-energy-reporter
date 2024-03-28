@@ -42,6 +42,7 @@ def test_fib_lower():
 @pytest.mark.energy
 def test_fib_lower_2x():
   fib(34)
+  fib(34)
 
 @pytest.mark.energy
 def test_nothing():

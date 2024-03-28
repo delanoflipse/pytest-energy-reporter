@@ -29,20 +29,34 @@ if __name__ == "__main__":
   energies = [x["energy"] for x in cases]
   avg_energies = [np.mean(x["energy"]) for x in cases]
   powers = [x["power"] for x in cases]
+  avg_powers = [np.mean(x["power"]) for x in cases]
   
   plt.figure()
   plt.boxplot(energies)
   plt.bar(ticks, avg_energies, alpha=0.2)
   plt.violinplot(energies)
   plt.ylim(bottom=0)
+  plt.title("Energy [J] per test case")
   plt.ylabel("Energy [J]")
-  plt.title("Energy [J]")
   # plt.title("Average Power [W]")
   # plt.ylabel("Average Power [W]")
   plt.xticks(ticks=ticks, labels=names)
   plt.grid(linestyle="--", linewidth=0.5)
   plt.show(block=False)
-  plt.xticks(rotation=-45)
+  plt.xticks(rotation=-45, ha='left')
+  plt.tight_layout()
+  
+  plt.figure()
+  plt.boxplot(powers)
+  plt.bar(ticks, avg_powers, alpha=0.2)
+  plt.violinplot(powers)
+  plt.ylim(bottom=0)
+  plt.title("Average Power [W] per test case")
+  plt.ylabel("Average Power [W]")
+  plt.xticks(ticks=ticks, labels=names)
+  plt.grid(linestyle="--", linewidth=0.5)
+  plt.show(block=False)
+  plt.xticks(rotation=-45, ha='left')
   plt.tight_layout()
 
   plt.show()
