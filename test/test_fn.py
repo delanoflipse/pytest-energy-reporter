@@ -48,6 +48,7 @@ def test_fib_34_2x():
 def test_fib_34_3x():
   fib(34)
   fib(34)
+  fib(34)
 
 @pytest.mark.energy
 def test_sleep_2s():

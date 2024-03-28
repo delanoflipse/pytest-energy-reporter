@@ -26,7 +26,14 @@ if __name__ == "__main__":
   cases = _filtered_cases
   
   ticks = [i + 1 for i in range(len(cases))]
-  names = [f'{x["name"].split("::")[-1]} (n={len(x["energy"])})' for x in cases]
+  names = []
+  for case in cases:
+    name = case["name"]
+    removed_postfix = name.split("::")[-1]
+    remove_test = removed_postfix.split("test_")[-1]
+    case_n = len(case["energy"])
+    tick_name = f"{remove_test} (n={case_n})"
+    names.append(tick_name)
   energies = [x["energy"] for x in cases]
   avg_energies = [np.mean(x["energy"]) for x in cases]
   powers = [x["power"] for x in cases]
