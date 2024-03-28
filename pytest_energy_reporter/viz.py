@@ -5,6 +5,8 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 
+from pytest_energy_reporter.util import print_table_str
+
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description="Visualize energy report measurements.")
   parser.add_argument('file_link', type=str, help='The relative path to the energy report file.')
@@ -115,35 +117,37 @@ if __name__ == "__main__":
     plt.savefig(os.path.join(save_path, "figure_edp"), dpi=300, bbox_inches='tight')
 
   metrics =  ["energy", "power", "execution_time"]
-  max_cv = {}
-  max_std = {}
-  for x in metrics:
-    max_std[x] = 0
-    max_cv[x] = 0
+  units = ["J", "W", "ms"]  
   
-  for index, case in enumerate(cases):
-    print("--------------------")
-    print(f"Case {index+1}: {case['name']}")
-    for x in metrics:
-      print(f"-- {x} --")
-      max_energy = np.max(case[x])
-      min_energy = np.min(case[x])
+  for metric, unit in zip(metrics, units):
+    
+    headers = [f"Case", f"Max ({unit})", f"Min ({unit})", f"Mean ({unit})", f"Abs diff ({unit})", f"Std ({unit})", f"CV"]
+    rows = []
+    
+    max_std = 0
+    max_cv = 0
+    
+    for index, case in enumerate(cases):
+      max_energy = np.max(case[metric])
+      min_energy = np.min(case[metric])
       abs_diff = max_energy - min_energy
-      std = np.std(case[x])
-      mean = np.mean(case[x])
+      std = np.std(case[metric])
+      mean = np.mean(case[metric])
       cv = std / mean
-      max_std[x] = max(max_std.get(x, 0), std)
-      max_cv[x] = max(max_cv.get(x, 0), cv)
-      print(f"Max: {max_energy}")
-      print(f"Min: {min_energy}")
-      print(f"Mean: {mean}")
-      print(f"Abs diff: {abs_diff}")
-      print(f"Std: {std}")
-    print(f"Avg EDP: {avg_edp[index]}")
-    print()
+      
+      rows.append([names[index], f"{max_energy:.2f}", f"{min_energy:.2f}", f"{mean:.2f}", f"{abs_diff:.2f}", f"{std:.2f}", f"{cv:.4f}"])
+      
+      max_std = max(max_std, std)
+      max_cv = max(max_cv, cv)
+    
+    table = print_table_str(headers, rows)
+    print(f"\n{metric.capitalize()} per test case:")
+    print("\n".join(table))
   
-  print(f"Max CV: {max_cv}")
-  print(f"Max STD: {max_std}")
+    print()
+    print(f"Max CV: {max_cv}")
+    print(f"Max STD: {max_std}")
+    print()
   
   plt.show()
   
