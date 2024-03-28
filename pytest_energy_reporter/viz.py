@@ -40,7 +40,6 @@ if __name__ == "__main__":
   avg_powers = [np.mean(x["power"]) for x in cases]
   timing = [x["execution_time"] for x in cases]
   avg_timing = [np.mean(x["execution_time"]) for x in cases]
-  
   edp = [[x * y / 1000 for (x, y) in zip(timing[i], energies[i])] for i in range(len(cases))]
   avg_edp = [np.mean(x) for x in edp]
   
@@ -115,6 +114,37 @@ if __name__ == "__main__":
   if args.save:
     plt.savefig(os.path.join(save_path, "figure_edp"), dpi=300, bbox_inches='tight')
 
+  metrics =  ["energy", "power", "execution_time"]
+  max_cv = {}
+  max_std = {}
+  for x in metrics:
+    max_std[x] = 0
+    max_cv[x] = 0
+  
+  for index, case in enumerate(cases):
+    print("--------------------")
+    print(f"Case {index+1}: {case['name']}")
+    for x in metrics:
+      print(f"-- {x} --")
+      max_energy = np.max(case[x])
+      min_energy = np.min(case[x])
+      abs_diff = max_energy - min_energy
+      std = np.std(case[x])
+      mean = np.mean(case[x])
+      cv = std / mean
+      max_std[x] = max(max_std.get(x, 0), std)
+      max_cv[x] = max(max_cv.get(x, 0), cv)
+      print(f"Max: {max_energy}")
+      print(f"Min: {min_energy}")
+      print(f"Mean: {mean}")
+      print(f"Abs diff: {abs_diff}")
+      print(f"Std: {std}")
+    print(f"Avg EDP: {avg_edp[index]}")
+    print()
+  
+  print(f"Max CV: {max_cv}")
+  print(f"Max STD: {max_std}")
+  
   plt.show()
   
   
