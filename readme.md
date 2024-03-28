@@ -2,6 +2,8 @@
 
 The `pytest_energy_reporter` is a `pytest` plugin can be used to report on energy and power consumption usage of code, by easily integrating in existing test suites.
 
+It relies on the [Energy Consumption Reporter](https://github.com/aron-hoogeveen/energy-consumption-reporter) to get approximations for energy measurements.
+
 ## Installation
 
 To install pytest energy reporter, simply run:
@@ -64,22 +66,10 @@ To install the pytest energy reporter repository, run:
 git clone git@github.com:delanoflipse/pytest-energy-reporter.git
 ```
 
-2. Clone subrepositories
-
-```bash
-git submodule init && git submodule update
-```
-
-3. Install dependencies 
+2. Install dependencies 
 ```bash
 poetry install
 ```
-
-4. (Temporary) (Only on windows) install wmi:
-```bash
-poetry run pip install pywin32
-```
-
 ### Usage
 
 To develop the plugin, use:
