@@ -38,8 +38,14 @@ if __name__ == "__main__":
   avg_energies = [np.mean(x["energy"]) for x in cases]
   powers = [x["power"] for x in cases]
   avg_powers = [np.mean(x["power"]) for x in cases]
+  timing = [x["execution_time"] for x in cases]
+  avg_timing = [np.mean(x["execution_time"]) for x in cases]
   
-  plt.figure()
+  edp = [[x * y / 1000 for (x, y) in zip(timing[i], energies[i])] for i in range(len(cases))]
+  avg_edp = [np.mean(x) for x in edp]
+  
+  fig = plt.figure()
+  fig.set_size_inches(5, 4)
   plt.boxplot(energies)
   plt.bar(ticks, avg_energies, alpha=0.2)
   plt.violinplot(energies)
@@ -59,7 +65,8 @@ if __name__ == "__main__":
   if args.save:
     plt.savefig(os.path.join(save_path, "figure_j"), dpi=300, bbox_inches='tight')
   
-  plt.figure()
+  fig = plt.figure()
+  fig.set_size_inches(5, 4)
   plt.boxplot(powers)
   plt.bar(ticks, avg_powers, alpha=0.2)
   plt.violinplot(powers)
@@ -73,6 +80,40 @@ if __name__ == "__main__":
   plt.tight_layout()
   if args.save:
     plt.savefig(os.path.join(save_path, "figure_w"), dpi=300, bbox_inches='tight')
+
+  fig = plt.figure()
+  fig.set_size_inches(5, 4)
+  plt.boxplot(timing)
+  plt.bar(ticks, avg_timing, alpha=0.2)
+  plt.violinplot(timing)
+  plt.ylim(bottom=0)
+  plt.title("Average Time [ms] per test case")
+  plt.ylabel("Average Time [ms]")
+  plt.xticks(ticks=ticks, labels=names)
+  plt.grid(linestyle="--", linewidth=0.5)
+  plt.show(block=False)
+  plt.xticks(rotation=-45, ha='left')
+  plt.tight_layout()
+  
+  if args.save:
+    plt.savefig(os.path.join(save_path, "figure_t"), dpi=300, bbox_inches='tight')
+
+  fig = plt.figure()
+  fig.set_size_inches(5, 4)
+  plt.boxplot(edp)
+  plt.bar(ticks, avg_edp, alpha=0.2)
+  plt.violinplot(edp)
+  plt.ylim(bottom=0)
+  plt.title("Average Energy Delay Product [j s] per test case")
+  plt.ylabel("Average Energy Delay Product [j s] ")
+  plt.xticks(ticks=ticks, labels=names)
+  plt.grid(linestyle="--", linewidth=0.5)
+  plt.show(block=False)
+  plt.xticks(rotation=-45, ha='left')
+  plt.tight_layout()
+  
+  if args.save:
+    plt.savefig(os.path.join(save_path, "figure_edp"), dpi=300, bbox_inches='tight')
 
   plt.show()
   
