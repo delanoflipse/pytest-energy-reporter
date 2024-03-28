@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pytest_energy_reporter"
-version = "0.5.0"
+version = "0.5.1"
 authors = [
   "Delano Flipse <delanoflipse@gmail.com>",
 ]
