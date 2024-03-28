@@ -10,20 +10,16 @@ def fib(n):
   else:
     return fib(n-1) + fib(n-2)
 
+@pytest.mark.energy(n=10)
+def test_fib_n10():
+  fib(35)
+  
 @pytest.mark.energy(n=5)
 def test_fib_n5():
   fib(35)
   
-@pytest.mark.energy(n=4)
-def test_fib_n4():
-  fib(35)
-  
 @pytest.mark.energy(n=3)
 def test_fib_n3():
-  fib(35)
-  
-@pytest.mark.energy(n=2)
-def test_fib_n2():
   fib(35)
   
 @pytest.mark.energy(n=1)
