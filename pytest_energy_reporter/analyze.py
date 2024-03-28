@@ -45,77 +45,38 @@ if __name__ == "__main__":
   edp = [[x * y / 1000 for (x, y) in zip(timing[i], energies[i])] for i in range(len(cases))]
   avg_edp = [np.mean(x) for x in edp]
   
-  fig = plt.figure()
-  fig.set_size_inches(5, 4)
-  plt.boxplot(energies)
-  plt.bar(ticks, avg_energies, alpha=0.2)
-  plt.violinplot(energies)
-  plt.ylim(bottom=0)
-  plt.title("Energy [J] per test case")
-  plt.ylabel("Energy [J]")
-  # plt.title("Average Power [W]")
-  # plt.ylabel("Average Power [W]")
-  plt.xticks(ticks=ticks, labels=names)
-  plt.grid(linestyle="--", linewidth=0.5)
-  plt.show(block=False)
-  plt.xticks(rotation=-45, ha='left')
-  plt.tight_layout()
+  figures = [
+    (energies, avg_energies, "Energy [J]", "figure_j"),
+    (powers, avg_powers, "Power [W]", "figure_w"),
+    (timing, avg_timing, "Time [ms]", "figure_t"),
+    (edp, avg_edp, "Energy Delay Product [j s]", "figure_edp")
+  ]
   
-  save_path = os.path.join(os.getcwd(), args.save) if args.save else None
+  # ----------------- Plotting -----------------
+  for figure in figures:
+    dist, avg, label, pth = figure
+    fig = plt.figure()
+    fig.set_size_inches(5, 4)
+    plt.boxplot(dist)
+    plt.bar(ticks, avg, alpha=0.2)
+    plt.violinplot(dist)
+    plt.ylim(bottom=0)
+    plt.title(f"{label} per test case")
+    plt.ylabel(f"{label}")
+    # plt.title("Average Power [W]")
+    # plt.ylabel("Average Power [W]")
+    plt.xticks(ticks=ticks, labels=names)
+    plt.grid(linestyle="--", linewidth=0.5)
+    plt.show(block=False)
+    plt.xticks(rotation=-45, ha='left')
+    plt.tight_layout()
+    
+    save_path = os.path.join(os.getcwd(), args.save) if args.save else None
+    
+    if args.save:
+      plt.savefig(os.path.join(save_path, pth), dpi=300, bbox_inches='tight')
   
-  if args.save:
-    plt.savefig(os.path.join(save_path, "figure_j"), dpi=300, bbox_inches='tight')
-  
-  fig = plt.figure()
-  fig.set_size_inches(5, 4)
-  plt.boxplot(powers)
-  plt.bar(ticks, avg_powers, alpha=0.2)
-  plt.violinplot(powers)
-  plt.ylim(bottom=0)
-  plt.title("Average Power [W] per test case")
-  plt.ylabel("Average Power [W]")
-  plt.xticks(ticks=ticks, labels=names)
-  plt.grid(linestyle="--", linewidth=0.5)
-  plt.show(block=False)
-  plt.xticks(rotation=-45, ha='left')
-  plt.tight_layout()
-  if args.save:
-    plt.savefig(os.path.join(save_path, "figure_w"), dpi=300, bbox_inches='tight')
-
-  fig = plt.figure()
-  fig.set_size_inches(5, 4)
-  plt.boxplot(timing)
-  plt.bar(ticks, avg_timing, alpha=0.2)
-  plt.violinplot(timing)
-  plt.ylim(bottom=0)
-  plt.title("Average Time [ms] per test case")
-  plt.ylabel("Average Time [ms]")
-  plt.xticks(ticks=ticks, labels=names)
-  plt.grid(linestyle="--", linewidth=0.5)
-  plt.show(block=False)
-  plt.xticks(rotation=-45, ha='left')
-  plt.tight_layout()
-  
-  if args.save:
-    plt.savefig(os.path.join(save_path, "figure_t"), dpi=300, bbox_inches='tight')
-
-  fig = plt.figure()
-  fig.set_size_inches(5, 4)
-  plt.boxplot(edp)
-  plt.bar(ticks, avg_edp, alpha=0.2)
-  plt.violinplot(edp)
-  plt.ylim(bottom=0)
-  plt.title("Average Energy Delay Product [j s] per test case")
-  plt.ylabel("Average Energy Delay Product [j s] ")
-  plt.xticks(ticks=ticks, labels=names)
-  plt.grid(linestyle="--", linewidth=0.5)
-  plt.show(block=False)
-  plt.xticks(rotation=-45, ha='left')
-  plt.tight_layout()
-  
-  if args.save:
-    plt.savefig(os.path.join(save_path, "figure_edp"), dpi=300, bbox_inches='tight')
-
+  # ----------------- Statistics -----------------
   metrics =  ["energy", "power", "execution_time"]
   units = ["J", "W", "ms"]  
   
@@ -141,9 +102,11 @@ if __name__ == "__main__":
       max_cv = max(max_cv, cv)
     
     table = print_table_str(headers, rows)
-    print(f"\n{metric.capitalize()} per test case:")
+    
+    # print the table
+    print()
+    print(f"{metric.capitalize()} per test case:")
     print("\n".join(table))
-  
     print()
     print(f"Max CV: {max_cv}")
     print(f"Max STD: {max_std}")
