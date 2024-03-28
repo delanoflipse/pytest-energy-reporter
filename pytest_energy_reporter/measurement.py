@@ -10,7 +10,7 @@ energy_tester.report_builder.report_path = "reports/energy/"
 class EnergyMeasurement:
     '''Energy Measurement data class'''
 
-    def __init__(self, name: str, time_ms: float, energy_j: float, power_w: float):
+    def __init__(self, name: str, time_ms: float, energy_j: float, power_w: float, cpu_util: float):
         self.name = name
         # Average time in mili sceonds
         self.time_ms = time_ms
@@ -20,6 +20,8 @@ class EnergyMeasurement:
         self.power_w = power_w
         # EDP
         self.edp = (time_ms / 1000) * energy_j
+        # CPU Utilization
+        self.cpu_util_percent = cpu_util
 
     def get_time_s(self):
         return self.time_ms / 1000
@@ -44,7 +46,7 @@ def measure(fn, n: int = 3, func_name: Optional[str] = None, include_case=False)
     time = np.mean(metrics['time'])
     energy = np.mean(metrics['energy'])
     power = np.mean(metrics['power'])
-    measurement = EnergyMeasurement(func_name, time, energy, power)
+    measurement = EnergyMeasurement(func_name, time, energy, power, metrics['cpu_util'])
     result = metrics['result']
     exception = metrics['exception']
 

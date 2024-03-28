@@ -1,3 +1,4 @@
+from matplotlib.pylab import f
 import pytest
 
 from .util import print_table_str
@@ -74,7 +75,7 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
 
     # report the energy metrics as a table
     terminalreporter.write_sep('-', 'Energy Summary')
-    table_headers = ['Test', 'Time (s)', 'Energy (J)', 'Power (W)', 'EDP (Js)']
+    table_headers = ['Test', 'Time (s)', 'Energy (J)', 'Power (W)', 'EDP (Js)', 'Util (%)']
     table_values = [
         [
             m.name,
@@ -82,6 +83,7 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
             f"{m.energy_j:.2f}",
             f"{m.power_w:.2f}",
             f"{m.edp:.1f}",
+            f"{m.cpu_util_percent:.1f}"
         ]
         for m in ordered_measurements
     ]
